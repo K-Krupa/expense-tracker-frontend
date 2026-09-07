@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import toast from 'react-hot-toast';
+import api from '../api/axiosConfig';
 
 const ExpenseForm = () => {
     const [formData, setFormData] = useState({
@@ -17,9 +19,30 @@ const ExpenseForm = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Dane gotowe do wysłania do API: ", formData)
+        
+        const toastId = toast.loading('Zapisywanie wydatku...');
+
+        try {
+            const payload = {
+                ...formData,
+                amount: parseFloat(formData.amount)
+            };
+            await api.post('', payload);
+
+            toast.success("Wydatek został dodany!", { id: toastId });
+            setFormData({
+                amount: '',
+                category: '',
+                description: '',
+                date: '',
+                type: 'ONE_TIME',
+            });
+        } catch (error) {
+            console.error("Błąd API:", error);
+            toast.error("Nie udało się zapisać. sprawdź połączenie z serwerem.", { id: toastId })
+        }
     };
 
     return (
