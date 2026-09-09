@@ -22,6 +22,24 @@ const ExpenseList = ({ refreshTrigger }) => {
         fetchExpenses();
     }, [refreshTrigger]);
 
+    const handleDelete = async (id) => {
+        if (!window.confirm("Czy na pewno chcesz usunąć ten wydatek?")) {
+            return;
+        }
+
+        const toastId = toast.loading('Usuwanie wydatku...');
+
+        try {
+            await api.delete(`/${id}`);
+            toast.success("Wydatek został usunięty!", { id: toastId });
+            fetchExpenses();
+        } catch (error) {
+            console.error("Nie udało się usunąć wpisu.", error);
+            toast.error("Nie udało się usunąć wpisu.", { id: toastId });
+        }
+    };
+
+
     if (isLoading) {
         return <div className="text-center py-8 text-gray-500">Ładowanie wydatkow...</div>
     }
@@ -39,7 +57,7 @@ const ExpenseList = ({ refreshTrigger }) => {
                             <th className="p-3 font-medium">Kategoria</th>
                             <th className="p-3 font-medium">Typ</th>
                             <th className="p-3 font-medium text-right">Kwota</th>
-
+                            <th className="p-3 font-medium text-center">Akcje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,6 +78,13 @@ const ExpenseList = ({ refreshTrigger }) => {
                                     </td>
                                     <td className="p-3 text-sm font-semibold text-right text-red-600">
                                         -{expense.amount.toFixed(2)} PLN 
+                                    </td>
+                                    <td className="p-3 text-sm font-semibold text-right text-red-600">
+                                        <button onClick={() => handleDelete(expense.id)} 
+                                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded transition-colors"
+                                        title = "usuń wpis">
+                                            Usuń
+                                        </button>
                                     </td>
                                 </tr>
                             ))
