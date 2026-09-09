@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../api/axiosConfig';
+import ExpenseSummary from './ExpenseSummary';
 
 const ExpenseList = ({ refreshTrigger }) => {
     const [expenses, setExpenses] = useState([]);
@@ -48,8 +49,8 @@ const ExpenseList = ({ refreshTrigger }) => {
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <ExpenseSummary expenses={expenses} />
             <h2 className="text-xl font-semibold mb-4 text-gray-800">Historia wydatków</h2>
-
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                     <thead>
