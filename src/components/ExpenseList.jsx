@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import api from '../api/axiosConfig';
 
-const ExpenseList = () => {
+const ExpenseList = ({ refreshTrigger }) => {
     const [expenses, setExpenses] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     
@@ -20,7 +20,7 @@ const ExpenseList = () => {
 
     useEffect(() => {
         fetchExpenses();
-    }, []);
+    }, [refreshTrigger]);
 
     if (isLoading) {
         return <div className="text-center py-8 text-gray-500">Ładowanie wydatkow...</div>

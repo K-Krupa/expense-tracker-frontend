@@ -2,7 +2,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast';
 import api from '../api/axiosConfig';
 
-const ExpenseForm = () => {
+const ExpenseForm = ( {onExpenseAdded }) => {
     const [formData, setFormData] = useState({
         amount: '',
         category: '',
@@ -32,6 +32,7 @@ const ExpenseForm = () => {
             await api.post('', payload);
 
             toast.success("Wydatek został dodany!", { id: toastId });
+            onExpenseAdded();
             setFormData({
                 amount: '',
                 category: '',
