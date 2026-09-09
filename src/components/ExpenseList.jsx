@@ -5,6 +5,7 @@ import api from '../api/axiosConfig';
 const ExpenseList = ({ refreshTrigger }) => {
     const [expenses, setExpenses] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [deleteModal, setDeleteModal] = useState({ isOpen: false, expenseId: null });
     
     const fetchExpenses = async () => {
         try {
@@ -22,20 +23,21 @@ const ExpenseList = ({ refreshTrigger }) => {
         fetchExpenses();
     }, [refreshTrigger]);
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Czy na pewno chcesz usunąć ten wydatek?")) {
-            return;
-        }
+    const openDeleteModal = (id) => {
+        setDeleteModal({ isOpen: true, expenseId: id});
+    };
 
+    const confirmDelete = async () => {
         const toastId = toast.loading('Usuwanie wydatku...');
-
         try {
-            await api.delete(`/${id}`);
+            await api.delete(`/${deleteModal.expenseId}`);
             toast.success("Wydatek został usunięty!", { id: toastId });
+            setDeleteModal({ isOpen: false, expenseId: null });
             fetchExpenses();
         } catch (error) {
             console.error("Nie udało się usunąć wpisu.", error);
             toast.error("Nie udało się usunąć wpisu.", { id: toastId });
+            setDeleteModal({ isOpen: false, expenseId: null });
         }
     };
 
@@ -80,9 +82,9 @@ const ExpenseList = ({ refreshTrigger }) => {
                                         -{expense.amount.toFixed(2)} PLN 
                                     </td>
                                     <td className="p-3 text-sm font-semibold text-right text-red-600">
-                                        <button onClick={() => handleDelete(expense.id)} 
-                                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded transition-colors"
-                                        title = "usuń wpis">
+                                        <button onClick={() => openDeleteModal(expense.id)} 
+                                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded transition-colors" 
+                                        title="usuń wpis">
                                             Usuń
                                         </button>
                                     </td>
@@ -92,8 +94,33 @@ const ExpenseList = ({ refreshTrigger }) => {
                     </tbody>
                 </table>
             </div>
+            {deleteModal.isOpen && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className= "bg-white rounded-xl shadow-2xl max-w-sm w-full  p-6 animate-fade-in">
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">Potwierdź usunięcie</h3>
+                        <p className="text-gray-600 mb-6 text-sm">
+                            Czy na pewno chcesz trwale usunąć ten wydatek? Tej operacji nie można cofnąć.
+                        </p>
+                        <div className="flex justify-end gap-3">
+                            <button 
+                onClick={() => setDeleteModal({ isOpen: false, expenseId: null })}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                Anuluj
+              </button>
+              <button 
+                onClick={confirmDelete}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+              >
+                Tak, usuń
+              </button>
+            </div>
+          </div>
         </div>
-    );
+      )}
+
+    </div>
+  );
 };
 
 export default ExpenseList;
