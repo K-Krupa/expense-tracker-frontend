@@ -1,16 +1,26 @@
-# React + Vite
+# Expense Tracker - Frontend Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## 📊 Project Overview
+A modern, responsive Single Page Application (SPA) built to track personal expenses. This frontend consumes a RESTful API and provides an intuitive user interface for managing finances. It features state management, derived statistics, and clean component-based architecture.
 
-Currently, two official plugins are available:
+## ✨ Key Features
+* **Expense Management:** Seamlessly add new expenses with form validation and dynamic state lifting.
+* **Smart Dashboard:** Real-time calculation of total, one-time, and recurring expenses using derived state.
+* **Custom UI Components:** Replaced native browser alerts with custom Tailwind CSS modals for safe record deletion.
+* **Error Handling:** Graceful API error handling integrated with React Hot Toast for instant user feedback.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🛠️ Tech Stack & Architecture
+* **Core Framework:** React (initialized with Vite for lightning-fast HMR and optimized builds).
+* **Styling:** Tailwind CSS v4 for a utility-first, fully responsive design without external CSS files.
+* **HTTP Client:** Axios configured with a custom instance and environment variables for secure API communication.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Getting Started
 
-## Expanding the Oxlint configuration
+To run this frontend locally, ensure you have the [Backend API](https://github.com/K-Krupa/expense-tracker-backend) running on port 8080.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+1. Clone the repository to your local machine.
+2. Run `npm install` to download all necessary dependencies.
+3. Create a `.env` file in the root directory and add `VITE_API_URL=http://localhost:8080/api/expenses`.
+4. Run `npm run dev` to start the development server on port 5173.
